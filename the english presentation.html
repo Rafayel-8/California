@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>California: The Golden State</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.85);
+      --gold-accent: #fbbf24;
+      --gold-hover: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    .deck-container {
+      width: 100%;
+      max-width: 1000px;
+      background: #1e293b;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 11.11%;
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      transition: width 0.4s ease;
+    }
+
+    .slide {
+      display: none;
+      padding: 40px;
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 520px;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--gold-accent);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    h1, h2 {
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    h1 { font-size: 2.5rem; color: #ffffff; }
+    h2 { font-size: 2rem; color: #ffffff; }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-top: -10px;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .full-width-hero {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .full-width-hero img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
+      padding: 24px;
+    }
+
+    .bullet-list {
+      list-style: none;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 28px;
+      margin-bottom: 16px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    .bullet-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--gold-accent);
+      font-size: 1.1rem;
+    }
+
+    .photo-card {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-card .caption {
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .pros-cons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .pros-box, .cons-box {
+      background: rgba(15, 23, 42, 0.6);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .pros-box h3 {
+      color: #4ade80;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+    }
+
+    .cons-box h3 {
+      color: #f87171;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(15, 23, 42, 0.9);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .nav-btns {
+      display: flex;
+      gap: 12px;
+    }
+
+    button {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    button.primary {
+      background: var(--gold-accent);
+      color: #0f172a;
+      border: none;
+    }
+
+    button.primary:hover {
+      background: var(--gold-hover);
+    }
+
+    button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .content-grid, .pros-cons-grid { grid-template-columns: 1fr; }
+      .slide { padding: 24px; min-height: auto; }
+      .controls { padding: 16px 24px; }
+      h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container">
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <!-- SLIDE 1 -->
+    <div class="slide active">
+      <span class="slide-badge">Slide 1 of 9 • Overview</span>
+      <h1>California: The Golden State</h1>
+      <div class="subtitle">A Journey Through Nature, Innovation, Freedom, and Opportunity</div>
+      <div class="full-width-hero">
+        <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=1200&auto=format&fit=crop" alt="Golden Gate Bridge" />
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 2 of 9 • People</span>
+      <h2>California & Its People</h2>
+      <div class="content-grid">
+        <div>
+          <ul class="bullet-list">
+            <li><strong>Population:</strong> Home to nearly 40 million residents.</li>
+            <li><strong>Cultural Diversity:</strong> People from every continent living and working together.</li>
+            <li><strong>Welcoming Environment:</strong> Famous for open-minded, friendly, and active communities.</li>
+          </ul>
+        </div>
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200&auto=format&fit=crop" alt="Diverse California Community" />
+          <div class="caption">A vibrant and multicultural society</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 3 of 9 • Nature</span>
+      <h2>Natural Beauty & Freedom</h2>
+      <div class="content-grid">
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop" alt="Yosemite National Park" />
+          <div class="caption">Yosemite Valley & Redwoods</div>
+        </div>
+        <div>
+          <ul class="bullet-list">
+            <li><strong>Yosemite Valley:</strong> Giant granite cliffs, waterfalls, and hiking trails.</li>
+            <li><strong>Pacific Coast Highway:</strong> Scenic ocean drives and endless sandy beaches.</li>
+            <li><strong>Redwood Forests:</strong> Home to the tallest trees on Earth.</li>
+            <li><strong>Spirit of Freedom:</strong> Outdoor lifestyle, surfing, and open opportunities.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 4 of 9 • History</span>
+      <h2>Key History Highlights</h2>
+      <div class="content-grid">
+        <div>
+          <ul class="bullet-list">
+            <li><strong>Native Roots:</strong> Rich history of Native American cultures across the region.</li>
+            <li><strong>1848 Gold Rush:</strong> Discovery of gold brought thousands seeking fortune.</li>
+            <li><strong>1850 Statehood:</strong> California officially joined the United States.</li>
+            <li><strong>1920s Hollywood:</strong> Los Angeles became the film capital of the world.</li>
+          </ul>
+        </div>
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?q=80&w=1200&auto=format&fit=crop" alt="Hollywood Sign" />
+          <div class="caption">Hollywood: Shaping world entertainment</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 5 of 9 • Innovation</span>
+      <h2>Silicon Valley & Future Perspectives</h2>
+      <div class="content-grid">
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop" alt="Silicon Valley Tech" />
+          <div class="caption">Global center for technology and AI</div>
+        </div>
+        <div>
+          <ul class="bullet-list">
+            <li><strong>Global Tech Epicenter:</strong> Headquarters of Apple, Google, Meta, and Tesla.</li>
+            <li><strong>AI & Future Tech:</strong> Leading world development in artificial intelligence and robotics.</li>
+            <li><strong>Unmatched Growth:</strong> Top destination for tech careers, investments, and startups.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 6 of 9 • Trivia</span>
+      <h2>Surprising & Fun Facts</h2>
+      <div class="content-grid">
+        <div>
+          <ul class="bullet-list">
+            <li><strong>Massive Economy:</strong> 5th largest economy in the world if it were a country.</li>
+            <li><strong>Garage Origins:</strong> Billion-dollar tech giants started in simple suburban garages.</li>
+            <li><strong>Global Influence:</strong> Hollywood movies and music shape international pop culture.</li>
+          </ul>
+        </div>
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop" alt="California Beach" />
+          <div class="caption">California coastal lifestyle</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 7 of 9 • Education</span>
+      <h2>Studying at Stanford University</h2>
+      <div class="content-grid">
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1200&auto=format&fit=crop" alt="University Campus" />
+          <div class="caption">Stanford University, Palo Alto</div>
+        </div>
+        <div>
+          <ul class="bullet-list">
+            <li><strong>Top Global Education:</strong> Founded in 1885 near San Francisco.</li>
+            <li><strong>Iconic Campus:</strong> Sunny palm trees and classic architecture.</li>
+            <li><strong>Entrepreneurial Mindset:</strong> Graduates created companies like Google and Instagram.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 8 of 9 • Analysis</span>
+      <h2>Advantages & Disadvantages</h2>
+      <div class="pros-cons-grid">
+        <div class="pros-box">
+          <h3>✓ Advantages (Pros)</h3>
+          <ul class="bullet-list">
+            <li><strong>Perfect Climate:</strong> Sunny and warm nearly all year.</li>
+            <li><strong>Career Perspectives:</strong> Huge opportunities in tech and business.</li>
+            <li><strong>Diverse Nature:</strong> Beaches, mountains, and national parks.</li>
+          </ul>
+        </div>
+        <div class="cons-box">
+          <h3>✗ Disadvantages (Cons)</h3>
+          <ul class="bullet-list">
+            <li><strong>High Living Costs:</strong> Expensive rent, housing, and expenses.</li>
+            <li><strong>Heavy Traffic:</strong> Long daily commutes in big cities.</li>
+            <li><strong>High Competition:</strong> Tough market for top jobs.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide">
+      <span class="slide-badge">Slide 9 of 9 • Conclusion</span>
+      <h2>Why I Want to Live in California</h2>
+      <div class="content-grid">
+        <div>
+          <ul class="bullet-list">
+            <li><strong>Silicon Valley Career:</strong> Being at the center of global innovation and AI.</li>
+            <li><strong>High Financial Upside:</strong> Outstanding earning potential and professional growth.</li>
+            <li><strong>Personal Freedom:</strong> Living in an open, ambitious, and inspiring environment.</li>
+            <li><strong>Lifestyle & Attractions:</strong> World-class concerts, beach life, and iconic sights.</li>
+          </ul>
+        </div>
+        <div class="photo-card">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop" alt="California Sunset" />
+          <div class="caption">Combining ambition with everyday beauty</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <div class="nav-btns">
+        <button id="prevBtn" onclick="changeSlide(-1)" disabled>Previous</button>
+        <button id="nextBtn" class="primary" onclick="changeSlide(1)">Next Slide →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const progress = document.getElementById('progress');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentSlide = 0;
+
+    function updateSlide() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+
+      const percentage = ((currentSlide + 1) / slides.length) * 100;
+      progress.style.width = percentage + '%';
+
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.textContent = currentSlide === slides.length - 1 ? 'Finish' : 'Next Slide →';
+    }
+
+    function changeSlide(direction) {
+      currentSlide += direction;
+      if (currentSlide < 0) currentSlide = 0;
+      if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+      updateSlide();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>
